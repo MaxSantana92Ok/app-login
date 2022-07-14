@@ -1,5 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {LogIn_Service /* GetTokenFromStorage */ /* , DeleteTokenAndLogOut */} from './services';
+import {
+  LogIn_Service /* GetTokenFromStorage */ /* , DeleteTokenAndLogOut */,
+  Refresh_Service,
+} from './services';
 
 const initialState = {
   serviceToken: '',
@@ -79,26 +82,22 @@ export const sessionSlice = createSlice({
     },
 
     /* GET TOKEN FROM STORAGE*/
-    /* [GetTokenFromStorage.pending]: state => {},
-    [GetTokenFromStorage.fulfilled]: (state, {payload}) => {
-      console.log(payload);
-      state.serviceToken = payload.token;
-      state.refreshToken = payload.refresh;
-      state.expiracion = payload.expires;
-      state.tokenType = payload.type;
+    [Refresh_Service.pending]: state => {},
+    [Refresh_Service.fulfilled]: (state, {payload}) => {
+      state.serviceToken = payload.info.data.access_token;
+      state.expiracion = payload.info.data.expires_in;
+      state.refreshToken = payload.info.data.refresh_token;
+      state.tokenType = payload.info.data.token_type;
+      state.user = {
+        username: payload.info.data.username,
+        name: payload.info.data.name,
+        lastname: payload.info.data.lastname,
+        roles: payload.info.data.roles,
+      };
+    },
+    [Refresh_Service.rejected]: (state, action) => {
       state.loading = false;
     },
-    [GetTokenFromStorage.rejected]: (state, action) => {
-      state.loading = false;
-    }, */
-    /* [DeleteTokenAndLogOut.fulfilled]: (state, action) => {
-      if (action.payload.ok) {
-        state.serviceToken = '';
-        state.expiracion = '';
-      } else {
-        state.error = action.payload.message;
-      }
-    }, */
   },
 });
 export const {setDefaultErrorGetToken, DeleteTokenAndLogOut} = sessionSlice.actions;
