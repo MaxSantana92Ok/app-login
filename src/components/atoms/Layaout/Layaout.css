@@ -1,0 +1,19 @@
+.LP-Layout {
+  width: 100%;
+  background-color: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  position: relative;
+}
+.LI-Layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 12px 10px 12px;
+  min-height: 100%;
+}
+
+@media screen and (min-width: 390px) {
+  .LI-Layout {
+    padding: 16px 16px 2.5rem 16px;
+  }
+}
