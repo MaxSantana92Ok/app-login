@@ -15,6 +15,11 @@ const CardUser = ({user = ''}) => {
         marginBottom={3}
       >
         <Box>
+          <Typography variant="subtitle2">
+            <Avatar src={user && user.photo ? user.photo : ''} />
+          </Typography>
+        </Box>
+        <Box>
           <Typography variant="subtitle2" fontStyle="oblique" fontWeight="700">
             {user && user.name ? user.name : 'Name'}
           </Typography>
@@ -22,11 +27,6 @@ const CardUser = ({user = ''}) => {
         <Box>
           <Typography variant="subtitle2">
             {user && user.birthDate ? new Date(user.birthDate).toDateString() : 'Birthday'}
-          </Typography>
-        </Box>
-        <Box>
-          <Typography variant="subtitle2">
-            <Avatar src={user && user.photo ? user.photo : ''} />
           </Typography>
         </Box>
       </Box>

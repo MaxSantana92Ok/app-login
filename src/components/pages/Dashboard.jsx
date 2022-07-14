@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   return (
     <LayaoutItem>
-      <Box width="100%" minHeight="100%" display="flex" flexDirection="column">
+      <Box width="100%" minHeight="90%" display="flex" flexDirection="column">
         {status_users === 'loading' && (
           <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
             <Loading />
