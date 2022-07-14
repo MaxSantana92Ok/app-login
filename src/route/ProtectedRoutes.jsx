@@ -1,24 +1,45 @@
 import {Box} from '@mui/system';
 import {useLayoutEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {LayaoutItem} from '../components/atoms/Layaout/Layaout';
 import Loading from '../components/atoms/Loading';
-/* import {GetTokenFromStorage} from '../redux/slices/user/services'; */
+import {Refresh_Service} from '../redux/slices/session/services';
 
 const ProtectedRoutes = ({children}) => {
+  const [statusToken, setStatusToken] = useState('loading');
+
   const dispatch = useDispatch();
+  const token = JSON.parse(localStorage.getItem('token'));
 
-  const {serviceToken} = useSelector(state => state.session);
+  if (token) {
+    dispatch(Refresh_Service());
+    return children;
+  }
 
-  /* useLayoutEffect(() => {
-    if (!serviceToken && loading) {
-      dispatch(GetTokenFromStorage());
+  if (token) {
+    if (token.expires < Date.now()) {
+      dispatch(Refresh_Service('token'));
+      return (
+        <LayaoutItem>
+          <Box mb={5}>
+            <Loading />
+          </Box>
+        </LayaoutItem>
+      );
     }
-    return () => {};
-  }, [serviceToken, loading]); */
+  }
 
-  /* if (!loading && !serviceToken) {
+  if (!token === 'navigate') {
+    return <Navigate to="/login" />;
+  }
+  /* return statusToken ? children : <Navigate to="login" />; */
+};
+
+export default ProtectedRoutes;
+
+/* if (!loading && !serviceToken) {
     console.log('ejecuta navigate');
     return <Navigate to="/login"></Navigate>;
   }
@@ -40,7 +61,3 @@ const ProtectedRoutes = ({children}) => {
       </LayaoutItem>
     )
   ); */
-  return serviceToken ? children : <Navigate to="login" />;
-};
-
-export default ProtectedRoutes;

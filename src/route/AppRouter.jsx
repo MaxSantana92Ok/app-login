@@ -4,16 +4,18 @@ import LogIn from '../components/pages/LogIn';
 import Dashboard from '../components/pages/Dashboard';
 import ProtectedRoutes from './ProtectedRoutes';
 import Header from '../components/organism/Header';
-import {Layaout, LayaoutItem} from '../components/atoms/Layaout/Layaout';
+import {Layaout} from '../components/atoms/Layaout/Layaout';
 import PublicRoute from './PublicRoute';
+import {Box} from '@mui/material';
 
 const AppRouter = () => {
   return (
     <React.Fragment>
       <Layaout>
-        <LayaoutItem>
+        <Box width="100%" display="flex">
           <Header />
-        </LayaoutItem>
+        </Box>
+
         <Routes>
           <Route
             path="login/*"

@@ -3,9 +3,9 @@ import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 
 const PublicRoute = ({children}) => {
-  const {serviceToken} = useSelector(state => state.session);
+  const token = JSON.parse(localStorage.getItem('token'));
 
-  return !serviceToken ? children : <Navigate to="/" />;
+  return !token ? children : <Navigate to="/" />;
 };
 
 export default PublicRoute;
