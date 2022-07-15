@@ -11,8 +11,6 @@ const CardUser = ({user = ''}) => {
         display="flex"
         justifyContent="space-around"
         alignItems="center"
-        borderBottom="1px solid lightblue"
-        marginBottom={3}
       >
         <Box>
           <Typography variant="subtitle2">

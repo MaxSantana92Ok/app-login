@@ -1,14 +1,13 @@
-import React, {useEffect, useLayoutEffect} from 'react';
+import React, {useEffect} from 'react';
 import {LayaoutItem} from '../atoms/Layaout/Layaout';
 import {Box} from '@mui/system';
-
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../atoms/Loading';
 import Error from '../atoms/Error';
 import {GetUsers_Service} from '../../redux/slices/users/services';
 import CardUser from '../organism/CardUser';
-import {Paper} from '@mui/material';
-
+import {setAlertOpen_Action} from '../../redux/slices/interface/interfaceSlice';
+import './DashboardStyles.css';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const {users, status_users} = useSelector(state => state.users);
@@ -17,7 +16,24 @@ const Dashboard = () => {
   useEffect(() => {
     if (!status_users) {
       dispatch(GetUsers_Service(serviceToken));
+    } else {
+      if (status_users === 'success') {
+        setTimeout(() => {
+          dispatch(setAlertOpen_Action({severity: 'success', message: 'Datos de usuario exitoso'}));
+        }, 700);
+      }
+      if (status_users === 'failed') {
+        setTimeout(() => {
+          dispatch(
+            setAlertOpen_Action({
+              severity: 'success',
+              message: 'Lo sentimos, no se obtuvieron datos de usuario',
+            })
+          );
+        }, 700);
+      }
     }
+
     return () => {};
   }, [status_users]);
 
@@ -30,12 +46,20 @@ const Dashboard = () => {
           </Box>
         )}
         {status_users === 'success' && (
-          <Box width="100%">
-            {users.length > 0 &&
-              users.map((user, index) => {
-                return <CardUser user={user} key={index} />;
-              })}
-          </Box>
+          <div className="CI-Dashboard">
+            <Box display="flex" flexDirection="column" justifyContent="space-around">
+              {users.length > 0 &&
+                users.map((user, index) => {
+                  return <CardUser user={user} key={index} />;
+                })}
+            </Box>
+            <Box>
+              <img
+                className="img"
+                src="https://i.pinimg.com/originals/e7/7c/d0/e77cd0526e693e6e7f5eb1eb0bb0f7ba.gif"
+              ></img>
+            </Box>
+          </div>
         )}
         {status_users === 'failed' && <Error />}
       </Box>

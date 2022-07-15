@@ -1,0 +1,14 @@
+.CI-Dashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60vh;
+  gap: 30px;
+}
+@media screen and (min-width: 480px) {
+  .CI-Dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 80vh;
+    gap: 30px;
+  }
+}
