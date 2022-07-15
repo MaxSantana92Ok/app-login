@@ -1,6 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
+import {useDispatch} from 'react-redux';
 import API from '../../../helpers/axiosInstance';
-
 export const GetUsers_Service = createAsyncThunk('users/getUsers_service', async token => {
   try {
     const response = await API({
@@ -8,6 +8,7 @@ export const GetUsers_Service = createAsyncThunk('users/getUsers_service', async
       url: `/users`,
       headers: {Authorization: 'Bearer ' + token},
     });
+
     return response;
   } catch {
     return 'error';
