@@ -6,9 +6,19 @@ import ProtectedRoutes from './ProtectedRoutes';
 import Header from '../components/organism/Header';
 import {Layaout} from '../components/atoms/Layaout/Layaout';
 import PublicRoute from './PublicRoute';
-import {Box} from '@mui/material';
+import {Alert, Box, Snackbar} from '@mui/material';
+import {useDispatch, useSelector} from 'react-redux';
+import {setAlertClose_Action} from '../redux/slices/interface/interfaceSlice';
 
 const AppRouter = () => {
+  const dispatch = useDispatch();
+  const {data_alert} = useSelector(state => state.interface);
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch(setAlertClose_Action());
+  };
   return (
     <React.Fragment>
       <Layaout>
@@ -39,6 +49,15 @@ const AppRouter = () => {
             }
           ></Route>
         </Routes>
+        <Snackbar
+          open={data_alert.open}
+          autoHideDuration={data_alert.duration}
+          onClose={handleCloseAlert}
+        >
+          <Alert onClose={handleCloseAlert} severity={data_alert.severity} sx={{width: '100%'}}>
+            {data_alert.message}
+          </Alert>
+        </Snackbar>
       </Layaout>
     </React.Fragment>
   );
