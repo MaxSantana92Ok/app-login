@@ -12,6 +12,7 @@ const Header = () => {
   const {serviceToken} = useSelector(state => state.session);
 
   const handleLogOut = () => {
+    localStorage.clear('token');
     dispatch(DeleteTokenAndLogOut_Action());
   };
 

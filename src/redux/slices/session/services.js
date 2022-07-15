@@ -4,7 +4,7 @@ import API from '../../../helpers/axiosInstance';
 // SERVICIO PARA OBTENER TOKEN DEL SERVICIO
 export const LogIn_Service = createAsyncThunk(
   // URL del thunk
-  'session/getToken',
+  'session/LogIn_Service',
   // Callback function
   async (post, thunkAPI) => {
     let response = '';
@@ -16,16 +16,13 @@ export const LogIn_Service = createAsyncThunk(
             url: `/login`,
             data: {username: post.email, password: post.password},
           });
-          /* thunkAPI.dispatch(
-            PostTokenIntoStorage({
-              value: {
-                token: response.data.access_token,
-                expires: response.data.expires_in,
-                type: response.data.token_type,
-                refresh: response.data.refresh_token,
-              },
-            })
-          ); */
+          let auxToken = {
+            info: response.data.access_token,
+            /* expires: Date.now() + 3600 * 1000, */
+            expires: Date.now(),
+          };
+          thunkAPI.dispatch(PostTokenIntoStorage(auxToken));
+
           return {info: response};
         } catch {
           if (!response) {
@@ -41,6 +38,32 @@ export const LogIn_Service = createAsyncThunk(
   }
 );
 
+export const Refresh_Service = createAsyncThunk(
+  // URL del thunk
+  'session/Refresh_Service',
+  // Callback function
+  async expires_in => {
+    let response = '';
+    try {
+      response = await API({
+        method: 'post',
+        url: `/login`,
+        data: {username: 'tom.manchini@yopmail.com', password: '1234'},
+      });
+      if (expires_in < Date.now) {
+        auxToken = {info: response.acces, expires: new Date(Date.now() + 3600 * 1000)};
+        localStorage.setItem('token', JSON.stringify(auxToken));
+      }
+
+      return {info: response};
+    } catch {
+      if (!response) {
+        return {info: {status: 0}};
+      }
+    }
+  }
+);
+
 // SERVICIO PARA OBTENER TOKEN DEL STORAGE
 /* export const GetTokenFromStorage = createAsyncThunk(
   'token/getTokenFromStorage',
@@ -51,11 +74,11 @@ export const LogIn_Service = createAsyncThunk(
 ); */
 
 // SERVICIO PARA GUARDAR TOKEN EN EL STORAGE
-/* export const PostTokenIntoStorage = createAsyncThunk('token/saveTokenIntoStorage', async post => {
+export const PostTokenIntoStorage = createAsyncThunk('token/saveTokenIntoStorage', async post => {
   localStorage.setItem('token', JSON.stringify(post));
-}); */
+});
 //SERVICIO PARA ELIMINAR TOKEN DE STORAGE
-/* export const DeleteTokenAndLogOut = createAsyncThunk('token/deleteTokenAndLogOut', async post => {
+export const DeleteTokenAndLogOut = createAsyncThunk('token/deleteTokenAndLogOut', async post => {
   let res = await avt.storage.user.delete({
     id: USER_ID,
     keys: ['tokenAgrow'],
@@ -65,4 +88,4 @@ export const LogIn_Service = createAsyncThunk(
   } else {
     return {ok: false, status: res.info.code};
   }
-}); */
+});
