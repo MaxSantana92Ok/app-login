@@ -4,7 +4,7 @@ import React from 'react';
 
 const CardUser = ({user = ''}) => {
   return (
-    <Paper elevation={1}>
+    <Paper elevation={1} className="animate__animated animate__backInUp">
       <Box
         width="100%"
         height="60px"

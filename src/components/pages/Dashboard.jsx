@@ -55,7 +55,7 @@ const Dashboard = () => {
             </Box>
             <Box>
               <img
-                className="img"
+                className="img animate__animated animate__fadeIn animate__delay-1s"
                 src="https://i.pinimg.com/originals/e7/7c/d0/e77cd0526e693e6e7f5eb1eb0bb0f7ba.gif"
               ></img>
             </Box>
