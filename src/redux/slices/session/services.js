@@ -42,7 +42,7 @@ export const Refresh_Service = createAsyncThunk(
   // URL del thunk
   'session/Refresh_Service',
   // Callback function
-  async type => {
+  async expires_in => {
     let response = '';
     try {
       response = await API({
@@ -50,8 +50,7 @@ export const Refresh_Service = createAsyncThunk(
         url: `/login`,
         data: {username: 'tom.manchini@yopmail.com', password: '1234'},
       });
-
-      if (type === 'token') {
+      if (expires_in < Date.now) {
         auxToken = {info: response.acces, expires: new Date(Date.now() + 3600 * 1000)};
         localStorage.setItem('token', JSON.stringify(auxToken));
       }

@@ -8,33 +8,33 @@ import Loading from '../components/atoms/Loading';
 import {Refresh_Service} from '../redux/slices/session/services';
 
 const ProtectedRoutes = ({children}) => {
-  const [statusToken, setStatusToken] = useState('loading');
-
   const dispatch = useDispatch();
-  const token = JSON.parse(localStorage.getItem('token'));
+  const {loading, serviceToken} = useSelector(state => state.session);
+  const tokenStorage = JSON.parse(localStorage.getItem('token'));
 
-  if (token) {
-    dispatch(Refresh_Service());
+  useLayoutEffect(() => {
+    if (tokenStorage) {
+      dispatch(Refresh_Service(tokenStorage.expires));
+    }
+
+    return () => {};
+  }, []);
+
+  if (!serviceToken && !loading) {
+    return <Navigate to="/login" />;
+  }
+
+  if (serviceToken && !loading) {
     return children;
   }
 
-  if (token) {
-    if (token.expires < Date.now()) {
-      dispatch(Refresh_Service('token'));
-      return (
-        <LayaoutItem>
-          <Box mb={5}>
-            <Loading />
-          </Box>
-        </LayaoutItem>
-      );
-    }
-  }
-
-  if (!token === 'navigate') {
-    return <Navigate to="/login" />;
-  }
-  /* return statusToken ? children : <Navigate to="login" />; */
+  return (
+    <LayaoutItem>
+      <Box mb={5}>
+        <Loading />
+      </Box>
+    </LayaoutItem>
+  );
 };
 
 export default ProtectedRoutes;
@@ -50,7 +50,7 @@ export default ProtectedRoutes;
     return children;
   }
 
-  //buscando token
+  
   return (
     loading && (
       <LayaoutItem>

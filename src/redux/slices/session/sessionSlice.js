@@ -82,8 +82,11 @@ export const sessionSlice = createSlice({
     },
 
     /* GET TOKEN FROM STORAGE*/
-    [Refresh_Service.pending]: state => {},
+    [Refresh_Service.pending]: state => {
+      state.loading = true;
+    },
     [Refresh_Service.fulfilled]: (state, {payload}) => {
+      state.loading = false;
       state.serviceToken = payload.info.data.access_token;
       state.expiracion = payload.info.data.expires_in;
       state.refreshToken = payload.info.data.refresh_token;
